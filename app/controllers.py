@@ -10,6 +10,10 @@ def route_handler(app):
 
     @app.route('/tg/<token>', methods=['POST'])
     def telegram_callback_handler(token):
+        if token != '{id}:{key}'.format(id=environ.get('TELEGRAM_BOT_ID'),
+                                        key=environ.get('TELEGRAM_API_KEY')):
+            return jsonify({'message': 'Permission denied'}), 403
+
         bot = Bot(environ.get('TELEGRAM_BOT_ID'), environ.get('TELEGRAM_API_KEY'))
         data = request.get_json(force=True)
         logging.error(data)
