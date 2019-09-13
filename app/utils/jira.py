@@ -23,7 +23,7 @@ class Jira:
         }
 
     def search_issues_by_description(self, search):
-        issues = self.auth_jira.search_issues('project = {project} AND description ~ {search}'.format(
+        issues = self.auth_jira.search_issues('project = {project} AND description ~ {search} OR project = {project} AND summary ~ {search}'.format(
             project=self.project,
             search=search
         ))
