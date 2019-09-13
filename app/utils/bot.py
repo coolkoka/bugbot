@@ -36,14 +36,25 @@ class Actions:
         title = re.sub(r'\@\w+', '', title)
         return title.strip()
 
+    def get_search_string(self):
+        search = self.text.replace(self.command, '')
+        return search.strip()
+
     def create_bug(self):
         logging.error(self.get_title())
         if len(self.tagged_members):
             jira = Jira()
             for member in self.tagged_members:
                 jira.create_issue(self.get_title(), member)
-            self.bot.send_message(self.chat_id, 'Создаю для {members} карточку О_о'.format(members=', '.join(self.tagged_members)))
+            self.bot.send_message(self.chat_id, 'Создал для {members} карточку О_о'.format(members=', '.join(self.tagged_members)))
+
+    def find_issue(self):
+        jira = Jira()
+        issues = jira.search_issues_by_description(self.get_search_string())
+        self.bot.send_message(self.chat_id, "Найденные карточки: %s") % ("\n".join(issues))
 
     def dispatch(self):
         if self.command == '/баг' or '/bug':
             self.create_bug()
+        if self.command == '/найти' or '/поиск' or '/find' or '/search':
+            self.find_issue()
