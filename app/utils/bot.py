@@ -20,7 +20,7 @@ class Bot:
             logging.error('Failed to send message: {e}'.format(e=e))
         return resp
 
-    def send_sticker(self, chat_id, sticker_id='AAQCAAOvAANOm2QCh-0yx2WLp-fR9jgOAAQBAAdtAAPnFQACFgQ'):
+    def send_sticker(self, chat_id, sticker_id='CAADAgADrwADTptkAoftMsdli6fnFgQ'):
         resp = None
         try:
             req = requests.get(self.url + '/sendSticker?chat_id={chat_id}&sticker={sticker}'.format(chat_id=chat_id,
