@@ -64,7 +64,7 @@ class Actions:
             self.bot.send_message(self.chat_id, "Не найдено карточек по такому запросу")
 
     def dispatch(self):
-        if self.command == '/баг' or '/bug':
+        if self.command in ['bug', 'баг']:
             self._create_bug()
         if self.command == '/найти' or '/поиск' or '/find' or '/search':
             self._find_issue()
