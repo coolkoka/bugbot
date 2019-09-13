@@ -27,8 +27,7 @@ class Jira:
             project=self.project,
             search=search
         ))
-        # TODO:  добавить обработку наверно что ли, выводить в нужном формате
-        return issues
+        return list(self._generate_url_to_issue(issue) for issue in issues)
 
     def create_issue(self, summary, responsible_user, description=''):
         issue = self.auth_jira.create_issue(project=self.project,
@@ -36,4 +35,7 @@ class Jira:
                                             description=description,
                                             issuetype={'name': 'Баг'})
         self.auth_jira.assign_issue(issue.key, self.jira_users[responsible_user])
+        return self._generate_url_to_issue(issue)
+
+    def _generate_url_to_issue(self, issue):
         return self.url + '/browse/' + issue.key
