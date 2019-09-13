@@ -56,16 +56,19 @@ class Actions:
             logging.error('Failed to create bug: {e}'.format(e=e))
 
     def _find_issue(self):
-        jira = Jira()
-        issues = jira.search_issues_by_description(self.get_search_string())
-        if len(issues) > 0:
-            self.bot.send_message(self.chat_id, "Найденные карточки: %s" % ("\n".join(issues)))
-        else:
-            self.bot.send_message(self.chat_id, "Не найдено карточек по такому запросу")
+        try:
+            jira = Jira()
+            issues = jira.search_issues_by_description(self.get_search_string())
+            if len(issues) > 0:
+                self.bot.send_message(self.chat_id, "Найденные карточки: %s" % ("\n".join(issues)))
+            else:
+                self.bot.send_message(self.chat_id, "Не найдено карточек по такому запросу")
+        except Exception as e:
+            logging.error('Failed to find issues: {e}'.format(e=e))
 
     def dispatch(self):
-        if self.command in ['bug', 'баг']:
+        if self.command in ['/bug', '/баг']:
             self._create_bug()
-        if self.command == '/найти' or '/поиск' or '/find' or '/search':
+        if self.command in ['/найти', '/поиск', '/find', '/search']:
             self._find_issue()
 
