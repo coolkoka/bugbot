@@ -33,7 +33,7 @@ class Jira:
         issue = self.auth_jira.create_issue(project=self.project,
                                             summary=summary,
                                             description=description,
-                                            issuetype={'name': 'Баг'})
+                                            issuetype={'name': 'Баг из телеги'})
         if responsible_user in self.jira_users:
             self.auth_jira.assign_issue(issue.key, self.jira_users[responsible_user])
         return self._generate_url_to_issue(issue)
