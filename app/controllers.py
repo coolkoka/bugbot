@@ -13,14 +13,15 @@ def route_handler(app):
         if token != '{id}:{key}'.format(id=environ.get('TELEGRAM_BOT_ID'),
                                         key=environ.get('TELEGRAM_API_KEY')):
             return jsonify({'message': 'Permission denied'}), 403
-        
+
         data = request.get_json(force=True)
         logging.error(data)
         logging.error(token)
-        if 'text' in data['message']:
+        if 'message' in data and 'text' in data['message']:
             message = data['message']['text']
             actions = Actions(message, data['message']['chat']['id'])
-            actions.dispatch()
+            if actions.is_command_exists():
+                actions.dispatch()
         return '', 200
 
     @app.route('/jira/callback', methods=['POST'])
