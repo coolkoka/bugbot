@@ -37,15 +37,19 @@ class Actions:
         return title.strip()
 
     def _create_bug(self):
-        logging.error(self._get_title())
-        if len(self.tagged_members):
-            jira = Jira()
-            issues = []
-            for member in self.tagged_members:
-                issue = jira.create_issue(self._get_title(), member)
-                issues.append(issue)
-            self.bot.send_message(self.chat_id, 'Создаю для {members} задачи: \n{issues}'.format(members=', '.join(self.tagged_members),
-                                                                                                 issues='\n'.join(issues)))
+        try:
+            logging.error(self._get_title())
+            if len(self.tagged_members):
+                jira = Jira()
+                issues = []
+                for member in self.tagged_members:
+                    issue = jira.create_issue(self._get_title(), member)
+                    issues.append(issue)
+                self.bot.send_message(self.chat_id, 'Создаю для {members} задачи: \n{issues}'.format(
+                    members=', '.join(self.tagged_members),
+                    issues='\n'.join(issues)))
+        except Exception as e: 
+            logging.error('Failed to create bug: {e}'.format(e=e))
 
     def dispatch(self):
         if self.command == '/баг' or '/bug':
