@@ -20,6 +20,17 @@ class Bot:
             logging.error('Failed to send message: {e}'.format(e=e))
         return resp
 
+    def send_sticker(self, chat_id, sticker_id='AAQCAAOvAANOm2QCh-0yx2WLp-fR9jgOAAQBAAdtAAPnFQACFgQ'):
+        resp = None
+        try:
+            req = requests.get(self.url + '/sendSticker?chat_id={chat_id}&sticker={sticker}'.format(chat_id=chat_id,
+                                                                                              sticker=sticker_id))
+            resp = req.json()
+        except Exception as e:
+            logging.error('Failed to send message: {e}'.format(e=e))
+        return resp
+
+
 class Actions:
     def __init__(self, text, chat_id):
         self.text = text
@@ -66,9 +77,17 @@ class Actions:
         except Exception as e:
             logging.error('Failed to find issues: {e}'.format(e=e))
 
+    def _press_f(self):
+        try:
+            self.bot.send_sticker(self.chat_id)
+        except Exception as e:
+            logging.error('Failed to press F: {e}'.format(e=e))
+
     def dispatch(self):
         if self.command in ['/bug', '/баг']:
             self._create_bug()
         if self.command in ['/найти', '/поиск', '/find', '/search']:
             self._find_issue()
+        if self.command in ['/f', '/F', '/Ф', '/ф']:
+            self._press_f()
 
