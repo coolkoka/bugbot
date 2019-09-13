@@ -58,7 +58,10 @@ class Actions:
     def _find_issue(self):
         jira = Jira()
         issues = jira.search_issues_by_description(self.get_search_string())
-        self.bot.send_message(self.chat_id, "Найденные карточки: %s" % ("\n".join(issues)))
+        if len(issues) > 0:
+            self.bot.send_message(self.chat_id, "Найденные карточки: %s" % ("\n".join(issues)))
+        else:
+            self.bot.send_message(self.chat_id, "Не найдено карточек по такому запросу")
 
     def dispatch(self):
         if self.command == '/баг' or '/bug':
