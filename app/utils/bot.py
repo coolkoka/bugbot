@@ -2,6 +2,7 @@ import re
 import logging
 import requests
 from os import environ
+from app.utils.jira import Jira
 
 class Bot:
     def __init__(self, bot_id, api_key):
@@ -30,8 +31,18 @@ class Actions:
     def is_command_exists(self):
         return True if self.command else False
 
+    def get_title(self):
+        title = self.text.replace(self.command, '')
+        for member in self.tagged_members:
+            title.replace(member, '')
+        return title.strip()
+
     def create_bug(self):
+        logging.error(self.get_title())
         if len(self.tagged_members):
+            jira = Jira()
+            for member in self.tagged_members:
+                jira.create_issue(self.get_title(), member)
             self.bot.send_message(self.chat_id, 'Создаю для {members} карточку О_о'.format(members=', '.join(self.tagged_members)))
 
     def dispatch(self):
