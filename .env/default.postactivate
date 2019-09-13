@@ -1,0 +1,15 @@
+#!/bin/bash
+# This hook is run after this virtualenv is activated.
+
+export PYTHONPATH=/vagrant/telegram-forwarding
+export LOG_PATH=/vagrant/telegram-forwarding/logs
+export LOG_LEVEL=INFO
+
+# App variables
+export APP_HOST=192.168.255.201
+export APP_PORT=5056
+export SERVICE_NAME=BugBot
+
+# Telegram variables
+export TELEGRAM_API_KEY=
+export TELEGRAM_BOT_ID=

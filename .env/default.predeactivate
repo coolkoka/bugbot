@@ -1,0 +1,24 @@
+#!/bin/bash
+# This hook is run before this virtualenv is deactivated.
+
+unset PYTHONPATH
+unset LOG_PATH
+unset LOG_LEVEL
+
+# Flask variables
+unset FLASK_APP
+unset FLASK_ENV
+
+# App variables
+unset APP_HOST
+unset APP_PORT
+unset SERVICE_NAME
+
+# Telegram variables
+unset TELEGRAM_API_KEY
+unset TELEGRAM_BOT_ID
+
+# Database variables
+unset DB_NAME
+unset DB_USER
+unset DB_PASSWORD

@@ -1,0 +1,9 @@
+*.pyc
+*.log
+*.cpython-36
+.idea/
+.git/
+logs/
+.env/postactivate
+.env/predeactivate
+__pycache__/
