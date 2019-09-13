@@ -31,7 +31,7 @@ class Actions:
         return True if self.command else False
 
     def create_bug(self):
-        if len(tagged_members):
+        if len(self.tagged_members):
             self.bot.send_message(self.chat_id, 'Создаю для {members} карточку О_о'.format(members=', '.join(self.tagged_members)))
 
     def dispatch(self):
