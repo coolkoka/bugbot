@@ -31,7 +31,7 @@ class Actions:
     def is_command_exists(self):
         return True if self.command else False
 
-    def get_title(self):
+    def _get_title(self):
         title = self.text.replace(self.command, '')
         title = re.sub(r'\@\w+', '', title)
         return title.strip()
@@ -40,21 +40,25 @@ class Actions:
         search = self.text.replace(self.command, '')
         return search.strip()
 
-    def create_bug(self):
-        logging.error(self.get_title())
+    def _create_bug(self):
+        logging.error(self._get_title())
         if len(self.tagged_members):
             jira = Jira()
+            issues = []
             for member in self.tagged_members:
-                jira.create_issue(self.get_title(), member)
-            self.bot.send_message(self.chat_id, 'Создал для {members} карточку О_о'.format(members=', '.join(self.tagged_members)))
+                issue = jira.create_issue(self._get_title(), member)
+                issues.append(issue)
+            self.bot.send_message(self.chat_id, 'Создаю для {members} задачи: \n{issues}'.format(members=', '.join(self.tagged_members),
+                                                                                                 issues='\n'.join(issues)))
 
-    def find_issue(self):
+    def _find_issue(self):
         jira = Jira()
         issues = jira.search_issues_by_description(self.get_search_string())
         self.bot.send_message(self.chat_id, "Найденные карточки: %s") % ("\n".join(issues))
 
     def dispatch(self):
         if self.command == '/баг' or '/bug':
-            self.create_bug()
+            self._create_bug()
         if self.command == '/найти' or '/поиск' or '/find' or '/search':
-            self.find_issue()
+            self._find_issue()
+
