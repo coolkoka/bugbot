@@ -33,8 +33,7 @@ class Actions:
 
     def get_title(self):
         title = self.text.replace(self.command, '')
-        for member in self.tagged_members:
-            title.replace(member, '')
+        title = re.sub(r'\@\w+', '', title)
         return title.strip()
 
     def create_bug(self):
