@@ -36,6 +36,10 @@ class Actions:
         title = re.sub(r'\@\w+', '', title)
         return title.strip()
 
+    def get_search_string(self):
+        search = self.text.replace(self.command, '')
+        return search.strip()
+
     def _create_bug(self):
         try:
             logging.error(self._get_title())
@@ -51,6 +55,14 @@ class Actions:
         except Exception as e: 
             logging.error('Failed to create bug: {e}'.format(e=e))
 
+    def _find_issue(self):
+        jira = Jira()
+        issues = jira.search_issues_by_description(self.get_search_string())
+        self.bot.send_message(self.chat_id, "Найденные карточки: %s") % ("\n".join(issues))
+
     def dispatch(self):
         if self.command == '/баг' or '/bug':
             self._create_bug()
+        if self.command == '/найти' or '/поиск' or '/find' or '/search':
+            self._find_issue()
+
